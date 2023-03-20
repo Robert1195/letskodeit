@@ -1,8 +1,10 @@
-from selenium.webdriver.common.by import By
 from base.selenium_driver import SeleniumDriver
+import logging
+import utilities.custom_logger as cl
 
 
 class LoginPage(SeleniumDriver):
+    log = cl.customLogger(logging.DEBUG, where="cmd")
 
     def __init__(self, driver):
         super().__init__(driver)
