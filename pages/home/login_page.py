@@ -15,6 +15,7 @@ class LoginPage(SeleniumDriver):
     _email_field = "email"
     _password_field = "login-password"
     _login_btn = "login"
+    _user_icon_xpath = "//span[text()='My Account']"
 
     # def get_login_link(self):
     #     return self.driver.find_element(By.LINK_TEXT, self._login_link)
@@ -45,3 +46,7 @@ class LoginPage(SeleniumDriver):
         self.enter_email(email)
         self.enter_password(password)
         self.click_login_btn()
+
+    def verify_login_successful(self):
+        result = self.is_element_present(self._user_icon_xpath, "xpath")
+        return result

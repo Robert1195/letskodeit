@@ -17,11 +17,8 @@ class LoginTests(unittest.TestCase):
         lp = LoginPage(driver)
         lp.login("space.ship199511@gmail.com", "Robert")
 
-        user_icon = driver.find_element(By.XPATH, "//span[text()='My Account']")
-        if user_icon is not None:
-            print("Login successful")
-        else:
-            print("Login Failed")
+        result = lp.verify_login_successful()
+        assert result == True
 
 
 if __name__ == '__main__':

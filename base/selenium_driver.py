@@ -61,7 +61,7 @@ class SeleniumDriver:
             self.log.info(f"Cannot send keys on element with locator: {locator}, Locator Type: {locator_type}")
             print_stack()
 
-    def is_element_present(self, data, locator, locator_type="id"):
+    def is_element_present(self, locator, locator_type="id"):
         try:
             element = self.get_element(locator, locator_type)
             if element is not None:
