@@ -16,6 +16,7 @@ class LoginPage(SeleniumDriver):
     _password_field = "login-password"
     _login_btn = "login"
     _user_icon_xpath = "//span[text()='My Account']"
+    _invalid_login_message_xpath = "//span[contains(text(),'Your username or password is invalid. Please try again.')]"
 
     # def get_login_link(self):
     #     return self.driver.find_element(By.LINK_TEXT, self._login_link)
@@ -31,16 +32,12 @@ class LoginPage(SeleniumDriver):
 
     def click_login_link(self):
         self.element_click(self._login_link, locator_type="link")
-
     def enter_email(self, email):
         self.sendKeys(email, self._email_field)
-
     def enter_password(self, password):
         self.sendKeys(password, self._password_field)
-
     def click_login_btn(self):
         self.element_click(self._login_btn)
-
     def login(self, email, password):
         self.click_login_link()
         self.enter_email(email)
@@ -49,4 +46,8 @@ class LoginPage(SeleniumDriver):
 
     def verify_login_successful(self):
         result = self.is_element_present(self._user_icon_xpath, "xpath")
+        return result
+
+    def verify_login_failed(self):
+        result = self.is_element_present(self._invalid_login_message_xpath, "xpath")
         return result
