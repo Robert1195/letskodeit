@@ -5,7 +5,7 @@ import time
 
 
 class LoginPage(SeleniumDriver):
-    log = cl.customLogger(logging.DEBUG, where="cmd")
+    log = cl.customLogger(logging.DEBUG, where="file")
 
     def __init__(self, driver):
         super().__init__(driver)
