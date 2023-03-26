@@ -97,3 +97,9 @@ class SeleniumDriver:
             self.log.info("Element not appeared on the web page")
             print_stack()
         return element
+
+    def get_title(self):
+        title = self.driver.title
+        return title
+
+

@@ -18,6 +18,7 @@ class LoginPage(SeleniumDriver):
     _login_btn = "login"
     _user_icon_xpath = "//span[text()='My Account']"
     _invalid_login_message_xpath = "//span[contains(text(),'Your username or password is invalid. Please try again.')]"
+    _title = "Google"
 
     # def get_login_link(self):
     #     return self.driver.find_element(By.LINK_TEXT, self._login_link)
@@ -43,8 +44,9 @@ class LoginPage(SeleniumDriver):
         self.click_login_link()
         self.enter_email(email)
         self.enter_password(password)
-        time.sleep(1)
+        time.sleep(2)
         self.click_login_btn()
+        time.sleep(2)
 
     def verify_login_successful(self):
         result = self.is_element_present(self._user_icon_xpath, "xpath")
@@ -53,6 +55,12 @@ class LoginPage(SeleniumDriver):
     def verify_login_failed(self):
         result = self.is_element_present(self._invalid_login_message_xpath, "xpath")
         return result
+
+    def verify_title(self):
+        if self._title in self.get_title():
+            return True
+        else:
+            return False
 
     def clear_fields(self):
         email_field = self.get_element(self._email_field)
