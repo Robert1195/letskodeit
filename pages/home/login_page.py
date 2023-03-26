@@ -1,6 +1,7 @@
 from base.selenium_driver import SeleniumDriver
 import logging
 import utilities.custom_logger as cl
+import time
 
 
 class LoginPage(SeleniumDriver):
@@ -11,12 +12,13 @@ class LoginPage(SeleniumDriver):
         self.driver = driver
 
     # Locators:
-    _login_link = "Sign Up or Log In"
+    _login_xpath = "//a[text()='Sign In']"
     _email_field = "email"
     _password_field = "login-password"
     _login_btn = "login"
     _user_icon_xpath = "//span[text()='My Account']"
     _invalid_login_message_xpath = "//span[contains(text(),'Your username or password is invalid. Please try again.')]"
+    _base_URL = "https://letskodeit.com/"
 
     # def get_login_link(self):
     #     return self.driver.find_element(By.LINK_TEXT, self._login_link)
@@ -31,7 +33,7 @@ class LoginPage(SeleniumDriver):
     #     return self.driver.find_element(By.ID, self._login_btn)
 
     def click_login_link(self):
-        self.element_click(self._login_link, locator_type="link")
+        self.element_click(self._login_xpath, locator_type="xpath")
     def enter_email(self, email):
         self.sendKeys(email, self._email_field)
     def enter_password(self, password):
@@ -42,6 +44,7 @@ class LoginPage(SeleniumDriver):
         self.click_login_link()
         self.enter_email(email)
         self.enter_password(password)
+        time.sleep(1)
         self.click_login_btn()
 
     def verify_login_successful(self):
