@@ -11,7 +11,7 @@ class LoginTests(unittest.TestCase):
 
     @pytest.mark.run(order=2)
     def test_valid_login(self):
-        self.driver.get(self.lp._base_URL)
+        self.lp.clear_fields()
         self.lp.login("space.ship199511@gmail.com", "Robert")
         result = self.lp.verify_login_successful()
         assert result == True

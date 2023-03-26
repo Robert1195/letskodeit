@@ -18,7 +18,6 @@ class LoginPage(SeleniumDriver):
     _login_btn = "login"
     _user_icon_xpath = "//span[text()='My Account']"
     _invalid_login_message_xpath = "//span[contains(text(),'Your username or password is invalid. Please try again.')]"
-    _base_URL = "https://letskodeit.com/"
 
     # def get_login_link(self):
     #     return self.driver.find_element(By.LINK_TEXT, self._login_link)
@@ -54,3 +53,9 @@ class LoginPage(SeleniumDriver):
     def verify_login_failed(self):
         result = self.is_element_present(self._invalid_login_message_xpath, "xpath")
         return result
+
+    def clear_fields(self):
+        email_field = self.get_element(self._email_field)
+        email_field.clear()
+        password_field = self.get_element(self._password_field)
+        password_field.clear()
