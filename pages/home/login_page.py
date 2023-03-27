@@ -1,10 +1,10 @@
-from base.selenium_driver import SeleniumDriver
 import logging
 import utilities.custom_logger as cl
 import time
+from base.basepage import BasePage
 
 
-class LoginPage(SeleniumDriver):
+class LoginPage(BasePage):
     log = cl.customLogger(logging.DEBUG, where="file")
 
     def __init__(self, driver):
@@ -57,10 +57,7 @@ class LoginPage(SeleniumDriver):
         return result
 
     def verify_title(self):
-        if self._title in self.get_title():
-            return True
-        else:
-            return False
+        self.verifyPageTitle("Google")
 
     def clear_fields(self):
         email_field = self.get_element(self._email_field)
