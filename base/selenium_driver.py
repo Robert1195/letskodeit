@@ -5,14 +5,35 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import *
 import logging
 import utilities.custom_logger as cl
+import time
+import os
 
 
 class SeleniumDriver:
-
     log = cl.customLogger(logging.DEBUG, where="cmd")
 
     def __init__(self, driver):
         self.driver = driver
+
+    def screenShot(self, result_message):
+        """
+        Takes screenshot of the current open web page
+        """
+        file_name = result_message + "." + str(round(time.time() * 1000)) + ".png"
+        screenshot_directory = "../screenshots/"
+        relativeFileName = screenshot_directory + file_name
+        current_directory = os.path.dirname(__file__)
+        destination_file = os.path.join(current_directory, relativeFileName)
+        destination_directory = os.path.join(current_directory, screenshot_directory)
+
+        try:
+            if not os.path.exists(destination_directory):
+                os.makedirs(destination_directory)
+            self.driver.save_screenshot(destination_file)
+            self.log.info("Screenshot save to directory: " + destination_file)
+        except:
+            self.log.error("### Exception Occurred when taking screenshot")
+            print_stack()
 
     def get_by_type(self, locator_type):
         locator_type = locator_type.lower()
@@ -29,7 +50,7 @@ class SeleniumDriver:
         elif locator_type == "link":
             return By.LINK_TEXT
         else:
-            self.log.info(f"Locator type is not supported/correct: {locator_type}")
+            self.log.error(f"Locator type is not supported/correct: {locator_type}")
             return False
 
     def get_element(self, locator, locator_type="id"):
@@ -40,7 +61,7 @@ class SeleniumDriver:
             element = self.driver.find_element(by_type, locator)
             self.log.info(f"Element found with locator: {locator}, Locator Type: {locator_type}")
         except:
-            self.log.info(f"Element not found with locator: {locator}, Locator Type: {locator_type}")
+            self.log.error(f"Element not found with locator: {locator}, Locator Type: {locator_type}")
         return element
 
     def element_click(self, locator, locator_type="id"):
@@ -49,7 +70,7 @@ class SeleniumDriver:
             element.click()
             self.log.info(f"Clicked on element with locator: {locator}, Locator Type: {locator_type}")
         except:
-            self.log.info(f"Cannot clicked on element with locator: {locator}, Locator Type: {locator_type}")
+            self.log.error(f"Cannot clicked on element with locator: {locator}, Locator Type: {locator_type}")
             print_stack()
 
     def sendKeys(self, data, locator, locator_type="id"):
@@ -58,7 +79,7 @@ class SeleniumDriver:
             element.send_keys(data)
             self.log.info(f"Send keys on element with locator: {locator}, Locator Type: {locator_type}")
         except:
-            self.log.info(f"Cannot send keys on element with locator: {locator}, Locator Type: {locator_type}")
+            self.log.error(f"Cannot send keys on element with locator: {locator}, Locator Type: {locator_type}")
             print_stack()
 
     def is_element_present(self, locator, locator_type="id"):
@@ -68,10 +89,10 @@ class SeleniumDriver:
                 self.log.info(f"Element found with locator: {locator}, Locator Type: {locator_type}")
                 return True
             else:
-                self.log.info(f"Element not found with locator: {locator}, Locator Type: {locator_type}")
+                self.log.error(f"Element not found with locator: {locator}, Locator Type: {locator_type}")
                 return False
         except:
-            self.log.info("Element not found")
+            self.log.error("Element not found")
             return False
 
     def are_elements_present(self, locator, by_type):
@@ -80,7 +101,7 @@ class SeleniumDriver:
             self.log.info("Elements found")
             return True
         else:
-            self.log.info("Elements not found")
+            self.log.error("Elements not found")
             return False
 
     def wait_for_element(self, locator, locator_type="id", timeout=10, pol_frequency=0.5):
@@ -89,17 +110,15 @@ class SeleniumDriver:
             byType = self.get_by_type(locator_type)
             self.log.info("Waiting for maximum :: ", timeout, " :: seconds for element to be visible")
             wait = WebDriverWait(self.driver, timeout=10, poll_frequency=1, ignored_exceptions=[NoSuchElementException,
-                                                                                           ElementNotVisibleException,
-                                                                                           ElementNotSelectableException])
+                                                                                                ElementNotVisibleException,
+                                                                                                ElementNotSelectableException])
             element = wait.until(EC.visibility_of_element_located((byType, locator)))
             self.log.info("Element appeard on the web page")
         except:
-            self.log.info("Element not appeared on the web page")
+            self.log.error("Element not appeared on the web page")
             print_stack()
         return element
 
     def get_title(self):
         title = self.driver.title
         return title
-
-
