@@ -16,7 +16,7 @@ class RegisterCoursesPage(BasePage):
     # Locators:
     _all_courser_link = "//a[text()='ALL COURSES']"  # by xpath
     _search_box = "input[id='search']"  # by css
-    _course = f"//div[@class='zen-course-list']//h4[contains(text(),'{0}')]"  # by xpath
+    _course = "//div[@class='zen-course-list']//h4[contains(text(),'{0}')]"  # by xpath
     _all_courses = "div[class='zen-course-list']"  # by css
     _enroll_button = "//button[text()='Enroll in Course']"
     _cc_num = "cardnumber"  # by name
@@ -26,6 +26,25 @@ class RegisterCoursesPage(BasePage):
     _enroll_error_message = "//span[text()='Numer karty jest niepoprawny.']"  # by xpath
 
     def click_all_courses_lick(self):
-        self.element_click(locator=self._all_courser_link, locator_type="xpath")
+        self.element_click(self._all_courser_link, "xpath")
+
+    def enter_course_name(self, name):
+        self.sendKeys(name, self._search_box, "css")
+
+    def select_course_to_enroll(self, full_course_name):
+        _course_locator = self._course.format(full_course_name)
+        self.element_click(_course_locator, "xpath")
+
+    def click_enroll_btn(self):
+        self.element_click(self._enroll_button, "xpath")
+
+    def scroll_page(self):
+        self.web_scroll(direction="down")
+
+
+
+
+
+
 
 

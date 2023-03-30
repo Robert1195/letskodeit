@@ -99,9 +99,9 @@ class SeleniumDriver:
             if locator:  # This means if locator is not empty
                 element = self.get_element(locator, locator_type)
             element.send_keys(data)
-            self.log.info(f"Send keys on element with locator: {locator}, Locator Type: {locator_type}")
+            self.log.info(f"Send keys: '{data}' on element with locator: {locator}, Locator Type: {locator_type}")
         except:
-            self.log.error(f"Cannot send keys on element with locator: {locator}, Locator Type: {locator_type}")
+            self.log.error(f"Cannot send keys: '{data}' on element with locator: {locator}, Locator Type: {locator_type}")
             print_stack()
 
     def get_text(self, locator="", locatorType="id", element=None, info=""):
@@ -201,8 +201,8 @@ class SeleniumDriver:
         """
         if direction == "up":
             # Scroll Up
-            self.driver.execute_script("window.scrollBy(0, -1000);")
+            self.driver.execute_script("window.scrollBy(0, -500);")
 
         if direction == "down":
             # Scroll Down
-            self.driver.execute_script("window.scrollBy(0, 1000);")
+            self.driver.execute_script("window.scrollBy(0, 500);")
