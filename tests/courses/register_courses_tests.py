@@ -18,4 +18,5 @@ class InvalidCardNumberTests(unittest.TestCase):
         self.rp.select_course_to_enroll("JavaScript for beginners")
         self.rp.click_enroll_btn()
         self.rp.scroll_page()
-        time.sleep(3)
+        self.rp.enter_card_num(num="5111 1111 1111 1118")
+        self.rp.enter_card_exp(exp="01 / 25")

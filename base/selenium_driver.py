@@ -206,3 +206,14 @@ class SeleniumDriver:
         if direction == "down":
             # Scroll Down
             self.driver.execute_script("window.scrollBy(0, 500);")
+
+    def change_iframe(self, locator="", locator_type="id"):
+        """
+        """
+        try:
+            iframe = self.get_element(locator, locator_type)
+            self.driver.switch_to.frame(iframe)
+            self.log.info(f"iframe changed to frame with locator: {locator}, Locator Type: {locator_type}")
+        except:
+            self.log.error(f"Cannot changed iframe to iframe with locator: {locator}, Locator Type: {locator_type}")
+            print_stack()
