@@ -104,7 +104,7 @@ class SeleniumDriver:
             self.log.error(f"Cannot send keys: '{data}' on element with locator: {locator}, Locator Type: {locator_type}")
             print_stack()
 
-    def get_text(self, locator="", locatorType="id", element=None, info=""):
+    def get_text(self, locator="", locator_type="id", element=None, info=""):
         """
         Get 'Text' on an element
         Either provide element or a combination of locator and locatorType
@@ -112,7 +112,7 @@ class SeleniumDriver:
         try:
             if locator:  # This means if locator is not empty
                 self.log.debug("In locator condition")
-                element = self.get_element(locator, locatorType)
+                element = self.get_element(locator, locator_type)
             self.log.debug("Before finding text")
             text = element.text
             self.log.debug("After finding element, size is: " + str(len(text)))
@@ -146,7 +146,7 @@ class SeleniumDriver:
             self.log.error("Element not found")
             return False
 
-    def is_element_displayed(self, locator="", locatorType="id", element=None):
+    def is_element_displayed(self, locator="", locator_type="id", element=None):
         """
         Check if element is displayed
         Either provide element or a combination of locator and locatorType
@@ -154,14 +154,14 @@ class SeleniumDriver:
         isDisplayed = False
         try:
             if locator:  # This means if locator is not empty
-                element = self.get_element(locator, locatorType)
+                element = self.get_element(locator, locator_type)
             if element is not None:
                 isDisplayed = element.is_displayed()
                 self.log.info("Element is displayed with locator: " + locator +
-                              " locatorType: " + locatorType)
+                              " locatorType: " + locator_type)
             else:
                 self.log.info("Element not displayed with locator: " + locator +
-                              " locatorType: " + locatorType)
+                              " locatorType: " + locator_type)
             return isDisplayed
         except:
             print("Element not found")
@@ -176,14 +176,19 @@ class SeleniumDriver:
             self.log.error("Elements not found")
             return False
 
-    def wait_for_element(self, locator, locator_type="id", timeout=10, pol_frequency=0.5):
+    def wait_for_element(self, locator, locator_type="id", timeout=10):
         element = None
+        self.log.info("************ PO ELEMENT *********")
         try:
+            self.log.info("************ PO TRY *********")
             byType = self.get_by_type(locator_type)
+            self.log.info(f"************ PO BY TYPE *********", {byType})
             self.log.info("Waiting for maximum :: ", timeout, " :: seconds for element to be visible")
+            self.log.info("************ Przed WAIT *********")
             wait = WebDriverWait(self.driver, timeout=10, poll_frequency=1, ignored_exceptions=[NoSuchElementException,
                                                                                                 ElementNotVisibleException,
                                                                                                 ElementNotSelectableException])
+            self.log.info("************ PO WAIT *********")
             element = wait.until(EC.visibility_of_element_located((byType, locator)))
             self.log.info("Element appeard on the web page")
         except:
@@ -207,13 +212,18 @@ class SeleniumDriver:
             # Scroll Down
             self.driver.execute_script("window.scrollBy(0, 500);")
 
-    def change_iframe(self, locator="", locator_type="id"):
+    def change_iframe(self, locator="", locator_type="xpath"):
         """
+        Method to change iframe
         """
         try:
-            iframe = self.get_element(locator, locator_type)
-            self.driver.switch_to.frame(iframe)
-            self.log.info(f"iframe changed to frame with locator: {locator}, Locator Type: {locator_type}")
+            if locator == "default":
+                self.driver.switch_to.default_content()
+                self.log.info("iframe changed to default frame")
+            else:
+                iframe = self.get_element(locator, locator_type)
+                self.driver.switch_to.frame(iframe)
+                self.log.info(f"iframe changed to frame with locator: {locator}, Locator Type: {locator_type}")
         except:
             self.log.error(f"Cannot changed iframe to iframe with locator: {locator}, Locator Type: {locator_type}")
             print_stack()

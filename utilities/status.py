@@ -13,7 +13,7 @@ from base.selenium_driver import SeleniumDriver
 
 
 class Status(SeleniumDriver):
-    log = cl.customLogger(logging.INFO, "file")
+    log = cl.customLogger(logging.INFO, where="file")
 
     def __init__(self, driver):
         """
