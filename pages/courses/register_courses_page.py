@@ -74,6 +74,11 @@ class RegisterCoursesPage(BasePage):
         self.click_buy_btn()
 
     def verify_buy_failed(self):
-        result = self.is_element_displayed(locator=self._card_num_incorrect_message, locator_type="xpath")
+        message = self.wait_for_element(locator=self._card_num_incorrect_message, locator_type="xpath")
+        result = self.is_element_displayed(element=message)
         return result
+
+    def verify_if_buy_btn_is_disabled(self):
+        result = self.isEnabled(locator=self._buy_btn, locator_type="css", info="Buy button")
+        return not result
 

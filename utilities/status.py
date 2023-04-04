@@ -27,14 +27,14 @@ class Status(SeleniumDriver):
             if result is not None:
                 if result:
                     self.resultList.append("PASS")
-                    self.log.info("### VERIFICATION SUCCESSFUL ### :: + " + resultMessage)
+                    self.log.info("### VERIFICATION SUCCESSFUL ### ::" + resultMessage)
                 else:
                     self.resultList.append("FAIL")
-                    self.log.error("### VERIFICATION FAILED ### :: + " + resultMessage)
+                    self.log.error("### VERIFICATION FAILED ### ::" + resultMessage)
                     self.screenShot(resultMessage)
             else:
                 self.resultList.append("FAIL")
-                self.log.error("### VERIFICATION FAILED ### :: + " + resultMessage)
+                self.log.error("### VERIFICATION FAILED ### ::" + resultMessage)
                 self.screenShot(resultMessage)
         except:
             self.resultList.append("FAIL")

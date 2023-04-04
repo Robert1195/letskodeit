@@ -176,29 +176,20 @@ class SeleniumDriver:
             self.log.error("Elements not found")
             return False
 
-    def wait_for_element(self, locator, locator_type="id", timeout=10):
+    def wait_for_element(self, locator, locator_type="id", timeout=10, polFrequency=0.5):
         element = None
-        self.log.info("************ PO ELEMENT *********")
         try:
-            self.log.info("************ PO TRY *********")
             byType = self.get_by_type(locator_type)
-            self.log.info(f"************ PO BY TYPE *********", {byType})
-            self.log.info("Waiting for maximum :: ", timeout, " :: seconds for element to be visible")
-            self.log.info("************ Przed WAIT *********")
-            wait = WebDriverWait(self.driver, timeout=10, poll_frequency=1, ignored_exceptions=[NoSuchElementException,
+            self.log.info("Waiting for maximum :: " + str(timeout) + " :: seconds for element to be visible")
+            wait = WebDriverWait(self.driver, timeout=timeout, poll_frequency=polFrequency, ignored_exceptions=[NoSuchElementException,
                                                                                                 ElementNotVisibleException,
                                                                                                 ElementNotSelectableException])
-            self.log.info("************ PO WAIT *********")
-            element = wait.until(EC.visibility_of_element_located((byType, locator)))
+            element = wait.until(EC.element_to_be_clickable((byType, locator)))
             self.log.info("Element appeard on the web page")
         except:
             self.log.error("Element not appeared on the web page")
             print_stack()
         return element
-
-    def get_title(self):
-        title = self.driver.title
-        return title
 
     def web_scroll(self, direction="up"):
         """
@@ -227,3 +218,91 @@ class SeleniumDriver:
         except:
             self.log.error(f"Cannot changed iframe to iframe with locator: {locator}, Locator Type: {locator_type}")
             print_stack()
+
+    def switchToFrame(self, id="", name="", index=None):
+        """
+        Switch to iframe using element locator inside iframe
+
+        Parameters:
+            1. Required:
+                None
+            2. Optional:
+                1. id    - id of the iframe
+                2. name  - name of the iframe
+                3. index - index of the iframe
+        Returns:
+            None
+        Exception:
+            None
+        """
+        if id:
+            self.driver.switch_to.frame(id)
+        elif name:
+            self.driver.switch_to.frame(name)
+        else:
+            self.driver.switch_to.frame(index)
+
+    def clearField(self, locator="", locatorType="id"):
+        """
+        Clear an element field
+        """
+        element = self.get_element(locator, locatorType)
+        element.clear()
+        self.log.info("Clear field with locator: " + locator +
+                      " locatorType: " + locatorType)
+
+    def getElementAttributeValue(self, attribute, element=None, locator="", locator_type="xpath"):
+        """
+        Get value of the attribute of element
+
+        Parameters:
+            1. Required:
+                1. attribute - attribute whose value to find
+
+            2. Optional:
+                1. element   - Element whose attribute need to find
+                2. locator   - Locator of the element
+                3. locatorType - Locator Type to find the element
+
+        Returns:
+            Value of the attribute
+        Exception:
+            None
+        """
+        if locator:
+            element = self.get_element(locator=locator, locator_type=locator_type)
+        value = element.get_attribute(attribute)
+        return value
+
+    def isEnabled(self, locator, locator_type="id", info=""):
+        """
+        Check if element is enabled
+
+        Parameters:
+            1. Required:
+                1. locator - Locator of the element to check
+            2. Optional:
+                1. locatorType - Type of the locator(id(default), xpath, css, className, linkText)
+                2. info - Information about the element, label/name of the element
+        Returns:
+            boolean
+        Exception:
+            None
+        """
+        element = self.get_element(locator, locator_type=locator_type)
+        enabled = False
+        try:
+            attributeValue = self.getElementAttributeValue(element=element, attribute="disabled")
+            if attributeValue is not None:
+                enabled = element.is_enabled()
+            else:
+                value = self.getElementAttributeValue(element=element, attribute="class")
+                self.log.info("Attribute value From Application Web UI --> :: " + value)
+                enabled = not ("disabled" in value)
+            if enabled:
+                self.log.info("Element :: '" + info + "' is enabled")
+            else:
+                self.log.info("Element :: '" + info + "' is not enabled")
+        except:
+            self.log.error("Element :: '" + info + "' state could not be found")
+        return enabled

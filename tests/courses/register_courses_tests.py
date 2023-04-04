@@ -17,8 +17,7 @@ class InvalidCardNumberTests(unittest.TestCase):
         """
         self.rp.buy_course(name="Javascript", full_course_name="JavaScript for beginners", num="5111 1111 1111 1118", exp="01 / 25", cvv="1111")
         result = self.rp.verify_buy_failed()
-        print("********************************")
-        print(result)
-        print("********************************")
-        self.ts.markFinal("test_invalid_buy", result, "Wrong card number verification message")
+        self.ts.mark(result, "Wrong card number verification")
+        result_2 = self.rp.verify_if_buy_btn_is_disabled()
+        self.ts.markFinal("test_invalid_buy", result_2, "Invalid card number test, buy button is disabled")
 
