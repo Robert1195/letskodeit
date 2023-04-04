@@ -242,6 +242,39 @@ class SeleniumDriver:
         else:
             self.driver.switch_to.frame(index)
 
+    def SwitchFrameByIndex(self, locator, locator_type="xpath"):
+
+        """
+        Get iframe index using element locator inside iframe
+
+        Parameters:
+            1. Required:
+                locator   - Locator of the element
+            2. Optional:
+                locatorType - Locator Type to find the element
+        Returns:
+            Index of iframe
+        Exception:
+            None
+        """
+        result = False
+        try:
+            iframe_list = self.get_element_list("//iframe", locator_type="xpath")
+            self.log.info("Length of iframe list: ")
+            self.log.info(str(len(iframe_list)))
+            for i in range(len(iframe_list)):
+                self.switchToFrame(index=iframe_list[i])
+                result = self.is_element_present(locator, locator_type)
+                if result:
+                    self.log.info("iframe index is:")
+                    self.log.info(str(i))
+                    break
+                self.driver.switch_to.default_content()
+            return result
+        except:
+            print("iFrame index not found")
+            return result
+
     def clearField(self, locator="", locatorType="id"):
         """
         Clear an element field
