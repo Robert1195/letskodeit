@@ -197,11 +197,11 @@ class SeleniumDriver:
         """
         if direction == "up":
             # Scroll Up
-            self.driver.execute_script("window.scrollBy(0, -500);")
+            self.driver.execute_script("window.scrollBy(0, -600);")
 
         if direction == "down":
             # Scroll Down
-            self.driver.execute_script("window.scrollBy(0, 500);")
+            self.driver.execute_script("window.scrollBy(0, 600);")
 
     def change_iframe(self, locator="", locator_type="xpath"):
         """
