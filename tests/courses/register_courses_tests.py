@@ -3,6 +3,7 @@ from utilities.status import Status
 import unittest
 import pytest
 from ddt import ddt, data, unpack
+from utilities.read_data import get_csv_data
 
 
 @pytest.mark.usefixtures("oneTimeSetUp")
@@ -12,7 +13,7 @@ class InvalidCardNumberTests(unittest.TestCase):
     def classSetup(self, oneTimeSetUp):
         self.rp = RegisterCoursesPage(self.driver)
         self.ts = Status(self.driver)
-    @data(("JavaScript for beginners", "5111 1111 1111 1118", "01 / 25", "1111"), ("Selenium WebDriver Advanced", "5111 1111 1111 1118", "01 / 25", "1111"))
+    @data(*get_csv_data("testdata.csv"))
     @unpack
     def test_invalid_buy(self, course_name, card_number, exp_num, cvv_num):
         """
