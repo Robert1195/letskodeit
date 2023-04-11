@@ -1,4 +1,6 @@
 import logging
+import time
+
 import utilities.custom_logger as cl
 from base.basepage import BasePage
 
@@ -71,6 +73,7 @@ class RegisterCoursesPage(BasePage):
         self.click_enroll_btn()
         self.scroll_page()
         self.enter_credit_card_info(num, exp, cvv)
+        self.scroll_page()
         self.click_buy_btn()
 
     def verify_buy_failed(self):
