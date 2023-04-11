@@ -18,7 +18,7 @@ class LoginPage(BasePage):
     _login_btn = "login"
     _user_icon_xpath = "//span[text()='My Account']"
     _invalid_login_message_xpath = "//span[contains(text(),'Your username or password is invalid. Please try again.')]"
-    _title = "Google"
+    _title = "My Courses"
 
     # def get_login_link(self):
     #     return self.driver.find_element(By.LINK_TEXT, self._login_link)
@@ -57,7 +57,7 @@ class LoginPage(BasePage):
         return result
 
     def verify_title(self):
-        self.verifyPageTitle("Google")
+        return self.verifyPageTitle(self._title)
 
     def clear_fields(self):
         email_field = self.get_element(self._email_field)

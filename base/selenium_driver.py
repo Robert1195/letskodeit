@@ -339,3 +339,6 @@ class SeleniumDriver:
         except:
             self.log.error("Element :: '" + info + "' state could not be found")
         return enabled
+
+    def get_title(self):
+        return self.driver.title
